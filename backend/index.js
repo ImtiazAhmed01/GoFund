@@ -1,0 +1,50 @@
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
+const port = process.env.PORT || 5000;
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// MongoDB connection setup
+const uri = `mongodb+srv://${(process.env.DB_user)}:${(process.env.DB_pass)}@cluster0.khtuk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
+
+async function connectMongoDB() {
+    try {
+        await client.connect();
+        console.log("✅ Connected to MongoDB");
+
+
+
+
+
+
+
+
+        // Test route to check server status
+        app.get('/', (req, res) => {
+            res.send('Server is running');
+        });
+
+        // Start the server
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+        process.exit(1);  // Exit process if the connection fails
+    }
+}
+
+connectMongoDB();
