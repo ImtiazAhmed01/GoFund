@@ -23,9 +23,61 @@ const client = new MongoClient(uri, {
 async function connectMongoDB() {
     try {
         await client.connect();
-        console.log("✅ Connected to MongoDB");
+        console.log("Connected to MongoDB");
+        const campaignsCollection = client.db('crowdfunding').collection('campaign');
+        const userCollection = client.db('crowdfunding').collection('users');
+        app.post('/users', async (req, res) => {
+            try {
+                const { firstName, lastName, email, photoURL } = req.body;
+
+                if (!firstName || !lastName || !email) {
+                    return res.status(400).json({ message: "First name, last name, and email are required" });
+                }
+
+                const alreadyUser = await userCollection.findOne({ email });
+                if (alreadyUser) {
+                    return res.status(400).json({ message: "This user already exists" });
+                }
+
+                const result = await userCollection.insertOne({
+                    fullName: `${firstName} ${lastName}`,
+                    firstName,
+                    lastName,
+                    email,
+                    photoURL: photoURL || "default-url",
+                    userRole: "User",
+                    registrationDate: new Date(),
+                });
+
+                res.status(201).json({ message: "User successfully registered", userId: result.insertedId });
+            } catch (error) {
+                res.status(500).json({ message: "Error registering user", error: error.message });
+            }
+        });
 
 
+        app.get('/users', async (req, res) => {
+            try {
+                const users = await userCollection.find().toArray();
+                res.status(200).json(users);
+            } catch (error) {
+                res.status(500).json({ message: "Failed to fetch users", error: error.message });
+            }
+        });
+
+
+        app.get('/users/:email', async (req, res) => {
+            try {
+                const email = req.params.email;
+                const user = await userCollection.findOne({ email });
+                if (!user) {
+                    return res.status(404).json({ message: "User not found" });
+                }
+                res.status(200).json(user);
+            } catch (error) {
+                res.status(500).json({ message: "Failed to fetch user", error: error.message });
+            }
+        });
 
 
 

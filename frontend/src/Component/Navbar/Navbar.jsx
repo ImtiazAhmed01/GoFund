@@ -35,7 +35,7 @@ const Navbar = () => {
                 })
                 .then((data) => {
                     console.log("API Response Data:", data);
-                    setUserRole(data.userRole); // Use userRole from the full user object
+                    setUserRole(data.userRole);
                 })
                 .catch((error) => {
                     console.error("Error fetching user role:", error);
