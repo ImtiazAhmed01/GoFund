@@ -13,7 +13,7 @@ const Welcomemsg = () => {
                             'Make a Difference',
                             'Start Contributing Today!',
                         ]}
-                        loop={0} // Infinite loop
+                        loop={0}
                         cursor
                         cursorStyle="_"
                         typeSpeed={100}

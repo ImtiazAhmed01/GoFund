@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-// import logo from '../../assets/icon/travel-bag.png'
+
 import { AuthContext } from '../Provider/authProvider';
 
 
 const SideNav = () => {
-    const { user } = useContext(AuthContext); // Get user from context
+    const { user } = useContext(AuthContext);
     const [userRole, setUserRole] = useState(null);
 
     useEffect(() => {

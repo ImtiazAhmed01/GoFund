@@ -40,8 +40,6 @@ async function connectMongoDB() {
 
                 })
                 console.log(runningCampaigns.length, dateFilter.length)
-
-                // console.log('Running campaigns:', runningCampaigns);  
                 res.json(runningCampaigns);
             } catch (error) {
                 console.error('Error fetching campaigns:', error);

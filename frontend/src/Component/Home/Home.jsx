@@ -24,7 +24,7 @@ const Home = () => {
                         {darkMode ? "Light Mode" : "Dark Mode"}
                     </button>
                 </div> */}
-                {/* Welcome message */}
+
                 <Welcomemsg></Welcomemsg>
                 {/* Slider Section */}
                 <div className="carousel w-full">
@@ -63,9 +63,9 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                {/*Running Campaign  */}
+
                 <RunningCampaigns></RunningCampaigns>
-                {/* Animation feature added */}
+
                 <Feature></Feature>
 
             </div>
