@@ -30,7 +30,24 @@ async function connectMongoDB() {
 
 
 
+        app.get('/running-campaigns', async (req, res) => {
+            try {
+                const currentDate = new Date();
+                const runningCampaigns = await campaignsCollection.find({}).limit(6).toArray();
+                const dateFilter = runningCampaigns.filter((item) => {
+                    console.log(new Date(item.deadline))
+                    return new Date(item.deadline) > currentDate
 
+                })
+                console.log(runningCampaigns.length, dateFilter.length)
+
+                // console.log('Running campaigns:', runningCampaigns);  
+                res.json(runningCampaigns);
+            } catch (error) {
+                console.error('Error fetching campaigns:', error);
+                res.status(500).send({ message: 'Error fetching campaigns' });
+            }
+        });
 
         // Test route to check server status
         app.get('/', (req, res) => {
