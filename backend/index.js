@@ -54,7 +54,27 @@ async function connectMongoDB() {
                 res.status(500).json({ message: "Error registering user", error: error.message });
             }
         });
+        app.put('/users/:email', async (req, res) => {
+            try {
+                const { email } = req.params;
+                const updatedData = req.body;
+                delete updatedData.email;
+                delete updatedData.userRole;
 
+                const result = await userCollection.updateOne(
+                    { email: email.toLowerCase() },
+                    { $set: updatedData }
+                );
+
+                if (result.matchedCount === 0) {
+                    return res.status(404).json({ message: "User not found" });
+                }
+
+                res.json({ message: "User profile updated successfully" });
+            } catch (error) {
+                res.status(500).json({ message: "Error updating user", error: error.message });
+            }
+        });
 
         app.get('/users', async (req, res) => {
             try {

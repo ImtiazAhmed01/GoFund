@@ -161,12 +161,49 @@ const Navbar = () => {
                                             My Profile
                                         </NavLink>
                                     )}
+
+
+                                    {userRole === "User" && (
+                                        <>
+                                            <NavLink
+                                                to="/my-campaigns"
+                                                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                My Campaign
+                                            </NavLink>
+                                            {/* <NavLink
+                                                to="/my-donations"
+                                                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                My Donation
+                                            </NavLink> */}
+                                        </>
+                                    )}
+
+                                    {userRole === "Admin" && (
+                                        <>
+                                            <NavLink
+                                                to="/wait-campaigns"
+                                                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                Wait Campaign
+                                            </NavLink>
+                                            <NavLink
+                                                to="/all-users"
+                                                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                All Users
+                                            </NavLink>
+                                        </>
+                                    )}
+
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                                     >
                                         Logout
                                     </button>
+
                                 </div>
                             )}
                         </div>
