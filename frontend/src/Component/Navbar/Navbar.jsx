@@ -158,7 +158,7 @@ const Navbar = () => {
                                             to={dashboardLink()}
                                             className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                                         >
-                                            Dashboard
+                                            My Profile
                                         </NavLink>
                                     )}
                                     <button

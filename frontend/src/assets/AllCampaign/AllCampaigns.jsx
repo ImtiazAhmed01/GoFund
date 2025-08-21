@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners'; // Importing a spinner from react-spinners
+import { ClipLoader } from 'react-spinners';
 
 const AllCampaigns = () => {
     const [campaigns, setCampaigns] = useState([]);
-    const [isLoading, setIsLoading] = useState(true); // Tracks loading state
-    const [sortOrder, setSortOrder] = useState('asc'); // Tracks the sort order (asc/desc)
+    const [isLoading, setIsLoading] = useState(true);
+    const [sortOrder, setSortOrder] = useState('asc');
     const navigate = useNavigate();
 
     useEffect(() => {

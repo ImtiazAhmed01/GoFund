@@ -18,9 +18,9 @@ import UpdateCampaign from './Component/Update/updateCampaign.jsx';
 import PrivateRoute from './Component/PrivateRoute.jsx';
 import Donation from './Donation.jsx';
 // import DashboardLayout from './Component/Dashboard/DashboardLayout.jsx';
-// import User from './Component/Dashboard/User/User.jsx';
-// import MyProfile from './Component/Dashboard/Myprofile.jsx';
-// import AdminUsers from './Component/Dashboard/Admin/AdminUser.jsx';
+import User from './Component/Dashboard/User/User.jsx';
+import MyProfile from './Component/Dashboard/Myprofile.jsx';
+import AdminUsers from './Component/Dashboard/Admin/AdminUser.jsx';
 import { ThemeProvider } from './Component/Provider/ThemeProvider.jsx';
 
 
@@ -43,15 +43,16 @@ const router = createBrowserRouter([
       { path: '/donation', element: <PrivateRoute><Donation /></PrivateRoute> }
     ]
   },
-  // {
-  //   path: '/dashboard',
-  //   element: <DashboardLayout />,
-  //   children: [
-  //     { path: 'user', element: <User /> },
-  //     { path: 'myprofile', element: <MyProfile /> },
-  //     { path: 'admin', element: <AdminUsers /> }
-  //   ]
-  // }
+  {
+    path: '/dashboard',
+    // element: <DashboardLayout />,
+    element: <Root />,
+    children: [
+      { path: 'user', element: <User /> },
+      { path: 'myprofile', element: <MyProfile /> },
+      { path: 'admin', element: <AdminUsers /> }
+    ]
+  }
 ]);
 
 

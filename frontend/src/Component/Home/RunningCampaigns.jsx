@@ -50,7 +50,7 @@ const RunningCampaigns = () => {
                         className="card bg-white shadow-lg rounded-md overflow-hidden"
                     >
                         <img
-                            src={campaign.image || '/placeholder-image.jpg'} // Placeholder image in case `image` is missing
+                            src={campaign.image || '/placeholder-image.jpg'}
                             alt={campaign.campaignTitle || 'Campaign Image'}
                             className="w-full h-40 object-cover"
                         />
