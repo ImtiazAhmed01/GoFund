@@ -78,7 +78,15 @@ async function connectMongoDB() {
                 res.status(500).json({ message: "Failed to fetch user", error: error.message });
             }
         });
-
+        app.get('/campaigns', async (req, res) => {
+            try {
+                const campaigns = await campaignsCollection.find({}).toArray();
+                res.json(campaigns);
+            } catch (error) {
+                console.error('Error fetching campaigns:', error);
+                res.status(500).send({ message: 'Error fetching campaigns' });
+            }
+        });
 
         app.post('/campaigns', async (req, res) => {
             try {
@@ -95,7 +103,7 @@ async function connectMongoDB() {
                     createdAt: new Date(),
                 };
 
-                const campaignsCollection = client.db('crowdcube').collection('campaign');
+                const campaignsCollection = client.db('crowdfunding').collection('campaign');
                 const result = await campaignsCollection.insertOne(newCampaign);
 
                 res.status(201).json({ message: 'Campaign added successfully', campaign: result.ops[0] });
@@ -128,7 +136,7 @@ async function connectMongoDB() {
                     return res.status(400).send({ message: 'User email is required' });
                 }
 
-                const campaignsCollection = client.db('crowdcube').collection('campaign');
+                const campaignsCollection = client.db('crowdfunding').collection('campaign');
                 const userCampaigns = await campaignsCollection.find({ userEmail }).toArray();
                 res.json(userCampaigns);
             } catch (error) {
@@ -139,7 +147,7 @@ async function connectMongoDB() {
         app.delete('/campaigns/:id', async (req, res) => {
             try {
                 const { id } = req.params;
-                const campaignsCollection = client.db('crowdcube').collection('campaign');
+                const campaignsCollection = client.db('crowdfunding').collection('campaign');
                 const result = await campaignsCollection.deleteOne({ _id: new ObjectId(id) });
                 if (result.deletedCount === 1) {
                     res.status(200).json({ message: 'Campaign deleted successfully' });
@@ -162,6 +170,130 @@ async function connectMongoDB() {
             } catch (error) {
                 console.error('Error fetching campaign details:', error);
                 res.status(500).send({ message: 'Error fetching campaign details' });
+            }
+        });
+        app.get('/updateCampaign/:id', async (req, res) => {
+            try {
+                const { id } = req.params;
+                const campaignsCollection = client.db('crowdfunding').collection('campaign');
+                const campaign = await campaignsCollection.findOne({ _id: new ObjectId(id) });
+
+                if (campaign) {
+                    res.json(campaign);
+                } else {
+                    res.status(404).send({ message: 'Campaign not found' });
+                }
+            } catch (error) {
+                console.error('Error fetching campaign details:', error);
+                res.status(500).send({ message: 'Error fetching campaign details' });
+            }
+        });
+        // app.post('/donate', async (req, res) => {
+        //     try {
+        //         const { campaignId, userEmail, userName } = req.body;
+
+        //         const db = client.db('crowdfunding');
+        //         const donationsCollection = db.collection('donated');
+        //         const campaignsCollection = db.collection('campaigns');
+
+        //         let objectId;
+        //         try {
+        //             objectId = new ObjectId(campaignId);
+        //         } catch (err) {
+        //             return res.status(400).json({ message: "Invalid campaignId" });
+        //         }
+
+        //         const campaign = await campaignsCollection.findOne(
+        //             { _id: objectId },
+        //             { projection: { campaignTitle: 1, description: 1, image: 1, campaignType: 1, minimumDonationAmount: 1, deadline: 1 } }
+        //         );
+
+        //         if (!campaign) {
+        //             return res.status(404).json({ message: "Campaign not found" });
+        //         }
+
+        //         const donationData = {
+        //             campaignId: objectId,
+        //             userEmail,
+        //             userName,
+        //             donatedAt: new Date(),
+        //             campaignTitle: campaign.campaignTitle,
+        //             description: campaign.description,
+        //             image: campaign.image,
+        //             campaignType: campaign.campaignType,
+        //             minimumDonationAmount: campaign.minimumDonationAmount,
+        //             deadline: campaign.deadline,
+        //         };
+
+        //         await donationsCollection.insertOne(donationData);
+
+        //         console.log('Donation saved:', donationData);
+        //         res.status(201).json({ message: 'Donation successful' });
+        //     } catch (error) {
+        //         console.error('Error processing donation:', error);
+        //         res.status(500).json({ message: 'Error processing donation' });
+        //     }
+        // });
+
+        app.post('/donate', async (req, res) => {
+            try {
+                const { campaignId, userEmail, userName } = req.body;
+                const db = client.db('crowdfunding');
+                const donationsCollection = db.collection('donated');
+                const campaignsCollection = db.collection('campaign');
+
+                let objectId;
+                try {
+                    objectId = new ObjectId(campaignId);
+                } catch (err) {
+                    return res.status(400).json({ message: "Invalid campaignId" });
+                }
+
+                const campaign = await campaignsCollection.findOne(
+                    { _id: objectId },
+                    { projection: { campaignTitle: 1, description: 1, image: 1, campaignType: 1, minimumDonationAmount: 1, deadline: 1 } }
+                );
+
+                if (!campaign) {
+                    return res.status(404).json({ message: "Campaign not found" });
+                }
+
+                const donationData = {
+                    campaignId: objectId,
+                    userEmail,
+                    userName,
+                    donatedAt: new Date(),
+                    campaignTitle: campaign.campaignTitle,
+                    description: campaign.description,
+                    image: campaign.image,
+                    campaignType: campaign.campaignType,
+                    minimumDonationAmount: campaign.minimumDonationAmount,
+                    deadline: campaign.deadline,
+                };
+
+                await donationsCollection.insertOne(donationData);
+                console.log('Donation saved:', donationData);
+                res.status(201).json({ message: 'Donation successful' });
+            } catch (error) {
+                console.error('Error processing donation:', error);
+                res.status(500).json({ message: 'Error processing donation' });
+            }
+        });
+
+        app.get('/donated/:email', async (req, res) => {
+            try {
+                const { email } = req.params;
+                const donationsCollection = client.db('crowdfunding').collection('donated');
+
+                const donations = await donationsCollection
+                    .find({ userEmail: email })
+                    .project({ campaignId: 1 })
+                    .toArray();
+
+                res.status(200).json(donations);
+            } catch (error) {
+                console.error('Error fetching donations:', error);
+                res.status(500).json({ message: 'Error fetching donations' });
             }
         });
 

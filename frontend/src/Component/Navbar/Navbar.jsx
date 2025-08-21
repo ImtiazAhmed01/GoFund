@@ -126,7 +126,7 @@ const Navbar = () => {
                         </ul>
                     </div>
                     <NavLink to="/" className="btn btn-ghost normal-case md:text-xl font-bold">
-                        CrowdCube
+                        GoFund
                     </NavLink>
                 </div>
 

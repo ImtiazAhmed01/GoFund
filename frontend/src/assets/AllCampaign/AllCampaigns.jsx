@@ -71,7 +71,7 @@ const AllCampaigns = () => {
                             </thead>
                             <tbody>
                                 {campaigns.map((campaign) => (
-                                    <tr key={campaign._id} className="hover:bg-gray-100">
+                                    <tr key={campaign._id} className="hover:bg-gray-100 hover:text-black">
                                         <td className="border border-gray-300 px-4 py-2 font-semibold">
                                             {campaign.campaignTitle}
                                         </td>
