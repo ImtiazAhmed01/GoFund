@@ -186,7 +186,7 @@ const Navbar = () => {
                                                 to="/wait-campaigns"
                                                 className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                                             >
-                                                Wait Campaign
+                                                Campaign Approval list
                                             </NavLink>
                                             <NavLink
                                                 to="/all-users"
