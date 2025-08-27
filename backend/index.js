@@ -132,6 +132,35 @@ async function connectMongoDB() {
                 res.status(500).send({ message: 'Error adding campaign' });
             }
         });
+        app.post("/adminreview", async (req, res) => {
+            try {
+                const newCampaign = req.body;
+
+
+                if (!newCampaign.campaignTitle || !newCampaign.userEmail) {
+                    return res
+                        .status(400)
+                        .json({ message: "Missing required fields: campaignTitle or userEmail" });
+                }
+
+                const result = await adminReviewCollection.insertOne(newCampaign);
+                res.status(201).json({ success: true, insertedId: result.insertedId });
+            } catch (error) {
+                console.error("Error inserting campaign:", error);
+                res.status(500).json({ success: false, error: "Failed to add campaign" });
+            }
+        });
+
+
+        app.get("/adminreview", async (req, res) => {
+            try {
+                const campaigns = await adminReviewCollection.find().toArray();
+                res.json(campaigns);
+            } catch (error) {
+                console.error("Error fetching campaigns:", error);
+                res.status(500).json({ error: "Failed to fetch campaigns" });
+            }
+        });
 
         app.get('/running-campaigns', async (req, res) => {
             try {
