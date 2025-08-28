@@ -15,6 +15,7 @@ const Home = () => {
     // };
     return (
         <div className=' dark:bg-gray-900 dark:text-white'>
+            <div className='pt-4'><Welcomemsg></Welcomemsg></div>
             <div className='md:px-14 lg:px-32 py-4'>
                 {/* <div>
                     <button
@@ -25,7 +26,7 @@ const Home = () => {
                     </button>
                 </div> */}
 
-                <Welcomemsg></Welcomemsg>
+
                 {/* Slider Section */}
                 <div className="carousel w-full">
                     <div id="slide1" className="carousel-item relative w-full">

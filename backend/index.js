@@ -96,6 +96,22 @@ async function connectMongoDB() {
                 res.status(500).json({ message: "Failed to fetch user", error: error.message });
             }
         });
+        app.delete('/users/:id', async (req, res) => {
+            try {
+                const { id } = req.params;
+                const result = await userCollection.deleteOne({ _id: new ObjectId(id) });
+                if (result.deletedCount === 0) {
+                    return res.status(404).json({ message: 'User not found' });
+                }
+                res.json({ message: 'User deleted successfully' });
+            } catch (err) {
+                console.error('Error deleting user:', err);
+                res.status(500).json({ message: 'Failed to delete user' });
+            }
+        });
+
+
+
         app.get('/campaigns', async (req, res) => {
             try {
                 const campaigns = await campaignsCollection.find({}).toArray();

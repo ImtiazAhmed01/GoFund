@@ -53,7 +53,7 @@ const AllCampaigns = () => {
                     <div className="flex justify-between items-center mb-4">
                         <button
                             onClick={handleSort}
-                            className="bg-green-600 text-white py-2 px-6 rounded hover:bg-green-700 transition duration-300"
+                            className="bg-cyan-600 text-white py-2 px-6 rounded hover:bg-cyan-700 transition duration-300"
                         >
                             Sort by Minimum Donation ({sortOrder === 'asc' ? 'Ascending' : 'Descending'})
                         </button>
@@ -88,7 +88,7 @@ const AllCampaigns = () => {
                                         </td>
                                         <td className="border border-gray-300 px-4 py-2 text-center">
                                             <button
-                                                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                                                className="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600"
                                                 onClick={() => handleSeeMore(campaign._id)}
                                             >
                                                 See More

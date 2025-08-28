@@ -4,7 +4,7 @@ import { Typewriter } from 'react-simple-typewriter';
 const Welcomemsg = () => {
     return (
         <div>
-            <section className="bg-orange-600 text-yellow-300 py-20 text-center">
+            <section className="bg-cyan-500 text-yellow-300 py-20 text-center">
                 <h1 className="text-4xl font-bold mb-4">Welcome to Our Platform</h1>
                 <h2 className="text-2xl">
                     <Typewriter

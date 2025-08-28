@@ -71,7 +71,7 @@ const RunningCampaigns = () => {
                                 <strong>Min Donation:</strong> $
                                 {campaign.minimumDonationAmount || 'N/A'}
                             </p>
-                            <button className="mt-4 px-4 py-2  bg-purple-600 text-white rounded-md">
+                            <button className="mt-4 px-4 py-2  bg-cyan-500 text-black rounded-md">
                                 See More
                             </button>
                         </div>
