@@ -210,7 +210,7 @@ const CampaignDetails = () => {
         <div className="min-h-screen flex items-center justify-center p-6 dark:bg-gray-900 dark:text-white">
             <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg overflow-hidden dark:bg-gray-800">
                 <img
-                    src={campaign.image}
+                    src={campaign.image || campaign.imageUrl}
                     alt={campaign.campaignTitle}
                     className="w-full h-60 object-cover"
                 />

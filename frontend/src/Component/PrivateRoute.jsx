@@ -5,7 +5,10 @@ import { AuthContext } from "./Provider/authProvider";
 const PrivateRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
 
-    return user ? children : <Navigate to="/login" />;
+    if (!user) return <Navigate to="/login" />;
+
+
+    return React.cloneElement(children, { user });
 };
 
 export default PrivateRoute;

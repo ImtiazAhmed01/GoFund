@@ -27,6 +27,7 @@ async function connectMongoDB() {
         const campaignsCollection = client.db('crowdfunding').collection('campaign');
         const userCollection = client.db('crowdfunding').collection('users');
         const adminReviewCollection = client.db('crowdfunding').collection("adminReview");
+        const donatedCollection = client.db('crowdfunding').collection('donated');
         app.post('/users', async (req, res) => {
             try {
                 const { firstName, lastName, email, photoURL } = req.body;
@@ -145,6 +146,34 @@ async function connectMongoDB() {
             } catch (error) {
                 console.error("Error inserting campaign:", error);
                 res.status(500).json({ success: false, error: "Failed to add campaign" });
+            }
+        });
+
+        app.post("/adminreview/approve/:id", async (req, res) => {
+            try {
+                const id = req.params.id;
+
+
+                const campaign = await adminReviewCollection.findOne({ _id: new ObjectId(id) });
+                if (!campaign) {
+                    return res.status(404).json({ success: false, message: "Campaign not found" });
+                }
+
+
+                await adminReviewCollection.updateOne(
+                    { _id: new ObjectId(id) },
+                    { $set: { status: "approved" } }
+                );
+
+
+                const copy = { ...campaign, status: "active", approvedAt: new Date() };
+                delete copy._id;
+                await campaignsCollection.insertOne(copy);
+
+                res.json({ success: true, message: "Campaign approved & copied to campaigns collection" });
+            } catch (error) {
+                console.error("Approval error:", error);
+                res.status(500).json({ success: false, message: "Internal server error" });
             }
         });
 
@@ -379,6 +408,23 @@ async function connectMongoDB() {
                 res.status(500).json({ message: 'Error fetching donations' });
             }
         });
+
+        app.get("/donations/:email", async (req, res) => {
+            try {
+                const email = req.params.email;
+
+                const donations = await donatedCollection
+                    .find({ userEmail: email })
+                    .sort({ donatedAt: -1 })
+                    .toArray();
+
+                res.json(donations);
+            } catch (error) {
+                console.error("Error fetching donations:", error);
+                res.status(500).json({ message: "Internal server error" });
+            }
+        });
+
 
         // Test route to check server status
         app.get('/', (req, res) => {

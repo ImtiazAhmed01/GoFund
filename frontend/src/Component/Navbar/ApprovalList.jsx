@@ -10,6 +10,7 @@ const ApprovalList = () => {
             const res = await fetch("http://localhost:5000/adminreview");
             const data = await res.json();
             setCampaigns(data);
+
         } catch (error) {
             console.error("Error fetching campaigns:", error);
         }
@@ -69,12 +70,17 @@ const ApprovalList = () => {
                             key={campaign._id}
                             className="p-4 border rounded-md shadow flex justify-between items-center"
                         >
-                            <div>
-                                <h3 className="text-xl font-semibold">{campaign.campaignTitle}</h3>
-                                <p className="text-gray-600">{campaign.description}</p>
-                                <p className="text-sm text-gray-500">
-                                    By: {campaign.userName} ({campaign.userEmail})
-                                </p>
+                            <div className="flex gap-8">
+                                <div>
+                                    <img src={campaign.imageUrl} alt="" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-semibold">{campaign.campaignTitle}</h3>
+                                    <p className="text-gray-600">{campaign.description}</p>
+                                    <p className="text-sm text-gray-500">
+                                        By: {campaign.userName} ({campaign.userEmail})
+                                    </p>
+                                </div>
                             </div>
                             <div className="flex space-x-2">
                                 <button
