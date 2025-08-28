@@ -243,7 +243,7 @@ async function connectMongoDB() {
         });
         app.get('/myCampaign', async (req, res) => {
             try {
-                const userEmail = req.query.userEmail; // Assume email is passed as a query param.
+                const userEmail = req.query.userEmail;
                 if (!userEmail) {
                     return res.status(400).send({ message: 'User email is required' });
                 }
@@ -346,6 +346,31 @@ async function connectMongoDB() {
         //         res.status(500).json({ message: 'Error processing donation' });
         //     }
         // });
+
+        // Update a campaign by ID
+        app.put('/campaign/:id', async (req, res) => {
+            try {
+                const campaignId = req.params.id;
+                const updateData = req.body;
+
+                const result = await client
+                    .db('crowdfunding')
+                    .collection('campaign')
+                    .updateOne(
+                        { _id: new ObjectId(campaignId) },
+                        { $set: updateData }
+                    );
+
+                if (result.matchedCount === 0) {
+                    return res.status(404).send({ message: 'Campaign not found' });
+                }
+
+                res.send({ message: 'Campaign updated successfully' });
+            } catch (error) {
+                console.error('Error updating campaign:', error);
+                res.status(500).send({ message: 'Failed to update campaign' });
+            }
+        });
 
         app.post('/donate', async (req, res) => {
             try {

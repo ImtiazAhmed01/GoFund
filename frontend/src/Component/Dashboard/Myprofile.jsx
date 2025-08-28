@@ -88,8 +88,8 @@ const MyProfile = () => {
     if (!userData) return <p>Loading profile...</p>;
 
     return (
-        <div className="max-w-4xl mx-auto p-6">
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-3xl shadow-xl overflow-hidden">
+        <div className="mx-auto pt-6">
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-xl overflow-hidden">
 
                 {/* Header with Cover */}
                 <div className="h-40 bg-gradient-to-r from-blue-500 to-purple-600 relative">

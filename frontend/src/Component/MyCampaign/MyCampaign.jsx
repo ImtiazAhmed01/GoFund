@@ -42,24 +42,25 @@ const MyCampaign = () => {
     };
 
     return (
-        <div className="my-campaigns  dark:bg-gray-900 dark:text-white">
+        <div className="my-campaigns  dark:bg-gray-900 dark:text-white p-6">
             <h2 className="text-2xl font-bold mb-6">My Campaigns</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {campaigns.map((campaign) => (
                     <div
                         key={campaign._id}
-                        className="card bg-white shadow-lg rounded-md overflow-hidden"
+                        className="card shadow-lg rounded-md overflow-hidden"
                     >
                         <img
-                            src={campaign.image || '/placeholder-image.jpg'}
+                            src={campaign.imageUrl || '/placeholder-image.jpg'}
                             alt={campaign.campaignTitle || 'Campaign Image'}
                             className="w-full h-40 object-cover"
                         />
+
                         <div className="p-4">
                             <h2 className="text-xl font-semibold">
                                 {campaign.campaignTitle || 'Untitled Campaign'}
                             </h2>
-                            <p className="text-gray-600 mt-2">
+                            <p className=" mt-2">
                                 {campaign.description
                                     ? `${campaign.description.slice(0, 100)}...`
                                     : 'No description available.'}
