@@ -138,74 +138,79 @@ const Navbar = () => {
                 {/* Navbar End */}
                 <div className="navbar-end gap-4 flex items-center relative">
                     {user ? (
-                        <div className="relative group flex gap-4" onClick={toggleDropdown}>
-                            <button onClick={toggleTheme} className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700">
-                                {darkMode ? "Light Mode" : "Dark Mode"}
-                            </button>
-                            <img src={user.photoURL} alt="User Avatar" className="w-8 h-8 rounded-full cursor-pointer" />
-                            {dropdownOpen && (
-                                <div
-                                    className={`absolute right-0 mt-2 w-48 shadow-lg rounded-md py-2 z-10 ${darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-                                        }`}
-                                >
-                                    <div className="px-4 py-2 text-sm">
-                                        <p className="font-bold">{user.displayName}</p>
-                                        <p>{user.email}</p>
-                                    </div>
-                                    <hr />
-                                    {dashboardLink() && (
-                                        <NavLink
-                                            to={dashboardLink()}
-                                            className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        >
-                                            My Profile
-                                        </NavLink>
-                                    )}
+                        <div className="flex">
+                            <div>
+                                <button onClick={toggleTheme} className="px-4 py-2 mr-10 rounded bg-gray-200 dark:bg-gray-700">
+                                    {darkMode ? "Light Mode" : "Dark Mode"}
+                                </button>
+                            </div>
+                            <div className="relative group flex gap-4" onClick={toggleDropdown}>
 
-
-                                    {userRole === "User" && (
-                                        <>
+                                <img src={user.photoURL} alt="User Avatar" className="w-8 h-8 rounded-full cursor-pointer" />
+                                {dropdownOpen && (
+                                    <div
+                                        className={`absolute right-0 mt-2 w-48 shadow-lg rounded-md py-2 z-10 ${darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
+                                            }`}
+                                    >
+                                        <div className="px-4 py-2 text-sm">
+                                            <p className="font-bold">{user.displayName}</p>
+                                            <p>{user.email}</p>
+                                        </div>
+                                        <hr />
+                                        {dashboardLink() && (
                                             <NavLink
-                                                to="/dashboard/my-campaigns"
+                                                to={dashboardLink()}
                                                 className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                                             >
-                                                My Campaign
+                                                My Profile
                                             </NavLink>
-                                            {/* <NavLink
+                                        )}
+
+
+                                        {userRole === "User" && (
+                                            <>
+                                                <NavLink
+                                                    to="/dashboard/my-campaigns"
+                                                    className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                >
+                                                    My Campaign
+                                                </NavLink>
+                                                {/* <NavLink
                                                 to="/my-donations"
                                                 className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                                             >
                                                 My Donation
                                             </NavLink> */}
-                                        </>
-                                    )}
+                                            </>
+                                        )}
 
-                                    {userRole === "Admin" && (
-                                        <>
-                                            <NavLink
-                                                to="/dashboard/wait-campaigns"
-                                                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                                            >
-                                                Campaign Approval list
-                                            </NavLink>
-                                            <NavLink
-                                                to="/all-users"
-                                                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                                            >
-                                                All Users
-                                            </NavLink>
-                                        </>
-                                    )}
+                                        {userRole === "Admin" && (
+                                            <>
+                                                <NavLink
+                                                    to="/dashboard/wait-campaigns"
+                                                    className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                >
+                                                    Campaign Approval list
+                                                </NavLink>
+                                                <NavLink
+                                                    to="/dashboard/all-users"
+                                                    className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                >
+                                                    All Users
+                                                </NavLink>
+                                            </>
+                                        )}
 
-                                    <button
-                                        onClick={handleLogout}
-                                        className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    >
-                                        Logout
-                                    </button>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        >
+                                            Logout
+                                        </button>
 
-                                </div>
-                            )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ) : (
                         <>

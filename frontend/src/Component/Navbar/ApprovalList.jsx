@@ -59,48 +59,100 @@ const ApprovalList = () => {
     };
 
     return (
-        <div className="p-6">
-            <h2 className="text-3xl font-bold mb-4">Pending Campaign Approvals</h2>
-            {campaigns.length === 0 ? (
-                <p>No campaigns waiting for approval.</p>
-            ) : (
-                <div className="space-y-4">
-                    {campaigns.map((campaign) => (
-                        <div
-                            key={campaign._id}
-                            className="p-4 border rounded-md shadow flex justify-between items-center"
-                        >
-                            <div className="flex gap-8">
-                                <div>
-                                    <img src={campaign.imageUrl} alt="" />
+        // <div className="p-6">
+        //     <h2 className="text-3xl font-bold mb-4">Pending Campaign Approvals</h2>
+        //     {campaigns.length === 0 ? (
+        //         <p>No campaigns waiting for approval.</p>
+        //     ) : (
+        //         <div className="space-y-4">
+        //             {campaigns.map((campaign) => (
+        //                 <div
+        //                     key={campaign._id}
+        //                     className="p-4 border rounded-md shadow flex justify-between items-center"
+        //                 >
+        //                     <div className="flex gap-8">
+        //                         <div>
+        //                             <img src={campaign.imageUrl} alt="" />
+        //                         </div>
+        //                         <div>
+        //                             <h3 className="text-xl font-semibold">{campaign.campaignTitle}</h3>
+        //                             <p className="text-gray-600">{campaign.description}</p>
+        //                             <p className="text-sm text-gray-500">
+        //                                 By: {campaign.userName} ({campaign.userEmail})
+        //                             </p>
+        //                         </div>
+        //                     </div>
+        //                     <div className="flex space-x-2">
+        //                         <button
+        //                             onClick={() => handleApprove(campaign._id)}
+        //                             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        //                         >
+        //                             Approve
+        //                         </button>
+        //                         <button
+        //                             onClick={() => handleDelete(campaign._id)}
+        //                             className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        //                         >
+        //                             Delete
+        //                         </button>
+        //                     </div>
+        //                 </div>
+        //             ))}
+        //         </div>
+        //     )}
+        // </div>
+
+        <div className="bg-gray-800">
+            <div className="mt-6 p-8">
+                <h2 className="text-3xl font-bold mb-4 text-white">
+                    Pending Campaign Approvals
+                </h2>
+                {campaigns.length === 0 ? (
+                    <p className="text-gray-600 dark:text-gray-400">No campaigns waiting for approval.</p>
+                ) : (
+                    <div className="space-y-4">
+                        {campaigns.map((campaign) => (
+                            <div
+                                key={campaign._id}
+                                className="p-4 border rounded-md shadow flex justify-between items-center 
+                     bg-white dark:bg-gray-800 
+                     border-gray-200 dark:border-gray-700"
+                            >
+                                <div className="flex gap-8">
+                                    <div>
+                                        <img src={campaign.imageUrl} alt="" className="w-24 h-24 object-cover rounded" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                                            {campaign.campaignTitle}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300">{campaign.description}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                                            By: {campaign.userName} ({campaign.userEmail})
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold">{campaign.campaignTitle}</h3>
-                                    <p className="text-gray-600">{campaign.description}</p>
-                                    <p className="text-sm text-gray-500">
-                                        By: {campaign.userName} ({campaign.userEmail})
-                                    </p>
+                                <div className="flex space-x-2">
+                                    <button
+                                        onClick={() => handleApprove(campaign._id)}
+                                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                    >
+                                        Approve
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(campaign._id)}
+                                        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                                    >
+                                        Delete
+                                    </button>
                                 </div>
                             </div>
-                            <div className="flex space-x-2">
-                                <button
-                                    onClick={() => handleApprove(campaign._id)}
-                                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                                >
-                                    Approve
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(campaign._id)}
-                                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
+
     );
 };
 
