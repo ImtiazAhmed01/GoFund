@@ -2,8 +2,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-// Importing all components
 import Home from './Component/Home/Home.jsx';
 import Root from './Root.jsx';
 import AuthProvider from './Component/Provider/authProvider.jsx';
@@ -19,11 +17,12 @@ import PrivateRoute from './Component/PrivateRoute.jsx';
 import Donation from './Donation.jsx';
 // import DashboardLayout from './Component/Dashboard/DashboardLayout.jsx';
 import User from './Component/Dashboard/User/User.jsx';
-import MyProfile from './Component/Dashboard/Myprofile.jsx';
 import AdminUsers from './Component/Dashboard/Admin/AdminUser.jsx';
 import { ThemeProvider } from './Component/Provider/ThemeProvider.jsx';
-
-
+import MyProfile from './Component/Dashboard/Myprofile.jsx';
+// import AdminUsers from './Component/Dashboard/Admin/AdminUser.jsx';
+import ApprovalList from './Component/Navbar/ApprovalList.jsx';
+// import MyCampaign from './Component/MyCampaign/MyCampaign.jsx';
 
 const router = createBrowserRouter([
   {
@@ -45,12 +44,14 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    // element: <DashboardLayout />,
     element: <Root />,
     children: [
       { path: 'user', element: <User /> },
       { path: 'myprofile', element: <MyProfile /> },
-      { path: 'admin', element: <AdminUsers /> }
+      { path: 'admin', element: <AdminUsers /> },
+      { path: 'wait-campaigns', element: <ApprovalList /> },
+      { path: 'my-campaigns', element: <MyCampaign /> }
+      // { path: 'all-users', element: <AllUsers /> }
     ]
   }
 ]);

@@ -166,7 +166,7 @@ const Navbar = () => {
                                     {userRole === "User" && (
                                         <>
                                             <NavLink
-                                                to="/my-campaigns"
+                                                to="/dashboard/my-campaigns"
                                                 className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                                             >
                                                 My Campaign
@@ -183,7 +183,7 @@ const Navbar = () => {
                                     {userRole === "Admin" && (
                                         <>
                                             <NavLink
-                                                to="/wait-campaigns"
+                                                to="/dashboard/wait-campaigns"
                                                 className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                                             >
                                                 Campaign Approval list

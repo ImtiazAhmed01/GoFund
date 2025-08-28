@@ -26,19 +26,17 @@ async function connectMongoDB() {
         console.log("Connected to MongoDB");
         const campaignsCollection = client.db('crowdfunding').collection('campaign');
         const userCollection = client.db('crowdfunding').collection('users');
+        const adminReviewCollection = client.db('crowdfunding').collection("adminReview");
         app.post('/users', async (req, res) => {
             try {
                 const { firstName, lastName, email, photoURL } = req.body;
-
                 if (!firstName || !lastName || !email) {
                     return res.status(400).json({ message: "First name, last name, and email are required" });
                 }
-
                 const alreadyUser = await userCollection.findOne({ email });
                 if (alreadyUser) {
                     return res.status(400).json({ message: "This user already exists" });
                 }
-
                 const result = await userCollection.insertOne({
                     fullName: `${firstName} ${lastName}`,
                     firstName,
@@ -48,7 +46,6 @@ async function connectMongoDB() {
                     userRole: "User",
                     registrationDate: new Date(),
                 });
-
                 res.status(201).json({ message: "User successfully registered", userId: result.insertedId });
             } catch (error) {
                 res.status(500).json({ message: "Error registering user", error: error.message });
@@ -161,6 +158,43 @@ async function connectMongoDB() {
                 res.status(500).json({ error: "Failed to fetch campaigns" });
             }
         });
+
+        app.post("/adminreview/approve/:id", async (req, res) => {
+            try {
+                const id = req.params.id;
+                const campaign = await adminReviewCollection.findOne({ _id: new ObjectId(id) });
+
+                if (!campaign) {
+                    return res.status(404).json({ message: "Campaign not found" });
+                }
+
+                const insertResult = await campaignsCollection.insertOne(campaign);
+
+                await adminReviewCollection.deleteOne({ _id: new ObjectId(id) });
+
+                res.json({ success: true, message: "Campaign approved & moved", insertedId: insertResult.insertedId });
+            } catch (error) {
+                console.error("Error approving campaign:", error);
+                res.status(500).json({ error: "Failed to approve campaign" });
+            }
+        });
+
+        app.delete("/adminreview/:id", async (req, res) => {
+            try {
+                const id = req.params.id;
+                const result = await adminReviewCollection.deleteOne({ _id: new ObjectId(id) });
+
+                if (result.deletedCount === 1) {
+                    res.json({ success: true, message: "Campaign deleted" });
+                } else {
+                    res.status(404).json({ message: "Campaign not found" });
+                }
+            } catch (error) {
+                console.error("Error deleting campaign:", error);
+                res.status(500).json({ error: "Failed to delete campaign" });
+            }
+        });
+
 
         app.get('/running-campaigns', async (req, res) => {
             try {
