@@ -45,7 +45,7 @@ const AddCampaign = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        fetch('http://localhost:5000/adminreview', {
+        fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/adminreview', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

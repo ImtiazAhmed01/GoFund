@@ -14,7 +14,7 @@
 //             return;
 //         }
 
-//         fetch(`http://localhost:5000/campaign/${id}`)
+//         fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/campaign/${id}`)
 //             .then(res => res.json())
 //             .then(data => setCampaign(data))
 //             .catch(err => console.error('Error fetching campaign details:', err));
@@ -29,7 +29,7 @@
 //             };
 
 
-//             fetch('http://localhost:5000/donate', {
+//             fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/donate', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const CampaignDetails = () => {
             navigate('/login');
             return;
         }
-        fetch(`http://localhost:5000/campaign/${id}`)
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/campaign/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 setCampaign(data);
@@ -121,7 +121,7 @@ const CampaignDetails = () => {
 
     useEffect(() => {
         if (user?.email && id) {
-            fetch(`http://localhost:5000/donated/${user.email}`)
+            fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/donated/${user.email}`)
                 .then((res) => res.json())
                 .then((data) => {
                     const donatedIds = (data || []).map((d) =>
@@ -173,7 +173,7 @@ const CampaignDetails = () => {
                 donatedAt: new Date(),
             };
 
-            const res = await fetch('http://localhost:5000/donate', {
+            const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/donate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(donationData),
@@ -209,11 +209,22 @@ const CampaignDetails = () => {
     return (
         <div className="min-h-screen flex items-center justify-center p-6 dark:bg-gray-900 dark:text-white">
             <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg overflow-hidden dark:bg-gray-800">
-                <img
-                    src={campaign.image || campaign.imageUrl}
-                    alt={campaign.campaignTitle}
-                    className="w-full h-60 object-cover"
-                />
+                <div className="carousel w-full h-80">
+                    <div id="item1" className="carousel-item w-full">
+                        <img src={campaign.image || campaign.imageUrl} className="w-full object-cover" />
+                    </div>
+                    <div id="item2" className="carousel-item w-full">
+                        <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb0?w=800&q=80" className="w-full object-cover" />
+                    </div>
+                    <div id="item3" className="carousel-item w-full">
+                        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=80" className="w-full object-cover" />
+                    </div>
+                </div>
+                <div className="flex justify-center w-full py-2 gap-2">
+                    <a href="#item1" className="btn btn-xs">1</a>
+                    <a href="#item2" className="btn btn-xs">2</a>
+                    <a href="#item3" className="btn btn-xs">3</a>
+                </div>
                 <div className="p-6">
                     <h2 className="text-2xl font-bold text-gray-800 mb-4 dark:text-white">
                         {campaign.campaignTitle}
@@ -262,9 +273,26 @@ const CampaignDetails = () => {
                     >
                         {hasDonated ? 'Already Donated' : isDonating ? 'Processing...' : 'Donate Now'}
                     </button>
+
+                    <div className="mt-8">
+                        <h3 className="text-xl font-bold dark:text-white mb-2">Key Specifications</h3>
+                        <ul className="list-disc ml-5 dark:text-gray-300">
+                            <li>Goal setting and tracking available</li>
+                            <li>Weekly progress reports for donors</li>
+                            <li>Funds are securely managed and transparent</li>
+                        </ul>
+                    </div>
+
+                    <div className="mt-8">
+                        <h3 className="text-xl font-bold dark:text-white mb-2">Reviews / Ratings</h3>
+                        <div className="bg-gray-100 p-4 rounded-lg dark:bg-gray-700">
+                            <p className="text-sm dark:text-gray-300">⭐ 4.8 / 5 based on 25 donor reviews</p>
+                            <p className="italic text-gray-500 mt-2">"Great cause! Highly recommend supporting this." - Sarah J.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

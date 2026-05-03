@@ -28,7 +28,7 @@
 //     };
 
 //     useEffect(() => {
-//         fetch(`http://localhost:5000/updateCampaign/${id}`)
+//         fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/updateCampaign/${id}`)
 //             .then((response) => {
 //                 if (!response.ok) {
 //                     throw new Error('Failed to fetch campaign details');
@@ -63,7 +63,7 @@
 //     const handleSubmit = (e) => {
 //         e.preventDefault();
 
-//         fetch(`http://localhost:5000/campaign/${id}`, {
+//         fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/campaign/${id}`, {
 //             method: 'PUT',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -221,7 +221,7 @@ const UpdateCampaign = () => {
     // Fetch campaign details on mount
     useEffect(() => {
         setIsLoading(true);
-        fetch(`http://localhost:5000/updateCampaign/${id}`)
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/updateCampaign/${id}`)
             .then((response) => {
                 if (!response.ok) throw new Error('Failed to fetch campaign details');
                 return response.json();
@@ -256,7 +256,7 @@ const UpdateCampaign = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch(`http://localhost:5000/campaign/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/campaign/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(campaign),

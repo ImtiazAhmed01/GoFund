@@ -23,7 +23,7 @@
 //     useEffect(() => {
 //         if (user?.email) {
 //             const email = user.email.toLowerCase();
-//             const url = `http://localhost:5000/users/${email}`;
+//             const url = `${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/users/${email}`;
 //             console.log("Fetching URL:", url);
 //             fetch(url)
 //                 .then((response) => {
@@ -264,7 +264,7 @@ const Navbar = () => {
     useEffect(() => {
         if (user?.email) {
             const email = user.email.toLowerCase();
-            fetch(`http://localhost:5000/users/${email}`)
+            fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/users/${email}`)
                 .then((res) => {
                     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
                     return res.json();
@@ -294,6 +294,16 @@ const Navbar = () => {
             <li>
                 <NavLink to="/campaigns" activeclassname="active">
                     All Campaign
+                </NavLink>
+            </li>
+            <li>
+                <NavLink to="/about" activeclassname="active">
+                    About
+                </NavLink>
+            </li>
+            <li>
+                <NavLink to="/contact" activeclassname="active">
+                    Contact
                 </NavLink>
             </li>
             {user && user.displayName && (

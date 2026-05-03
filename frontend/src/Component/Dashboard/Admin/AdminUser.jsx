@@ -14,7 +14,7 @@ const AdminUser = () => {
             if (user?.email) {
                 try {
                     const email = user.email.toLowerCase();
-                    const url = `http://localhost:5000/users/${email}`;
+                    const url = `${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/users/${email}`;
                     const response = await fetch(url);
                     if (!response.ok) {
                         throw new Error(`Server error: ${response.status}`);
@@ -52,7 +52,7 @@ const AdminUser = () => {
     const handleSave = async () => {
         setIsEditing(false);
         try {
-            const response = await fetch(`http://localhost:5000/users/${user.email}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/users/${user.email}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

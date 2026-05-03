@@ -7,7 +7,7 @@ const ApprovalList = () => {
     // Fetch campaigns from adminReview
     const fetchCampaigns = async () => {
         try {
-            const res = await fetch("http://localhost:5000/adminreview");
+            const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + "/adminreview");
             const data = await res.json();
             setCampaigns(data);
 
@@ -23,7 +23,7 @@ const ApprovalList = () => {
     // Approve campaign
     const handleApprove = async (id) => {
         try {
-            const res = await fetch(`http://localhost:5000/adminreview/approve/${id}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/adminreview/approve/${id}`, {
                 method: "POST",
             });
             const data = await res.json();
@@ -42,7 +42,7 @@ const ApprovalList = () => {
     // Delete campaign
     const handleDelete = async (id) => {
         try {
-            const res = await fetch(`http://localhost:5000/adminreview/${id}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/adminreview/${id}`, {
                 method: "DELETE",
             });
             const data = await res.json();

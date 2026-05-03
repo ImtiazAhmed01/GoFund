@@ -5,7 +5,7 @@ const Donation = ({ user }) => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:5000/donations/${user.email}`)
+            fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/donations/${user.email}`)
                 .then((res) => res.json())
                 .then((data) => setDonations(data));
         }

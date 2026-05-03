@@ -8,6 +8,8 @@ const Login = () => {
     const { signInUser, signInWithGoogle } = useContext(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const handleGoogleSignIn = async () => {
@@ -32,11 +34,11 @@ const Login = () => {
     };
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+        if (e) e.preventDefault();
+        const emailToUse = e ? e.target.email.value : email;
+        const passwordToUse = e ? e.target.password.value : password;
 
-        if (!email || !password) {
+        if (!emailToUse || !passwordToUse) {
             toast.error('Please enter both email and password.', {
                 position: "top-center",
                 autoClose: 5000,
@@ -47,7 +49,8 @@ const Login = () => {
         }
 
         try {
-            const userCredential = await signInUser(email, password);
+            setIsSubmitting(true);
+            const userCredential = await signInUser(emailToUse, passwordToUse);
             const user = userCredential.user;
 
             if (user) {
@@ -67,7 +70,17 @@ const Login = () => {
                 theme: "light",
                 transition: Bounce,
             });
+        } finally {
+            setIsSubmitting(false);
         }
+    };
+
+    const handleDemoLogin = () => {
+        setEmail("admin@test.com"); // Assuming an admin demo account
+        setPassword("123456");
+        setTimeout(() => {
+            document.getElementById('login-form-submit').click();
+        }, 100);
     };
 
     const togglePasswordVisibility = () => {
@@ -89,6 +102,7 @@ const Login = () => {
                             placeholder="email"
                             name="email"
                             className="input input-bordered"
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
@@ -103,6 +117,8 @@ const Login = () => {
                                 placeholder="password"
                                 name="password"
                                 className="input input-bordered w-full pr-10"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                             <svg
@@ -131,8 +147,13 @@ const Login = () => {
                     </div>
 
                     <div className="form-control mt-6">
-                        <button type="submit" className="btn btn-success">
-                            Login
+                        <button id="login-form-submit" type="submit" className="btn btn-success" disabled={isSubmitting}>
+                            {isSubmitting ? <span className="loading loading-spinner"></span> : "Login"}
+                        </button>
+                    </div>
+                    <div className="form-control mt-2">
+                        <button type="button" onClick={handleDemoLogin} className="btn btn-info">
+                            Demo Login
                         </button>
                     </div>
                     <div className="mt-3">

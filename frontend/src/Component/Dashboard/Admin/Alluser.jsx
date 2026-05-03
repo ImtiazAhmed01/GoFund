@@ -5,7 +5,7 @@
 //     const [users, setUsers] = useState([]);
 
 //     useEffect(() => {
-//         axios.get("http://localhost:5000/users")
+//         axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + "/users")
 //             .then((res) => setUsers(res.data))
 //             .catch((err) => console.error(err));
 //     }, []);
@@ -14,7 +14,7 @@
 //     const handleDelete = async (id) => {
 //         if (window.confirm("Are you sure you want to delete this user permanently?")) {
 //             try {
-//                 await axios.delete(`http://localhost:5000/users/${id}`);
+//                 await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/users/${id}`);
 //                 setUsers(users.filter((user) => user._id !== id));
 //                 alert("User deleted successfully!");
 //             } catch (err) {
@@ -78,7 +78,7 @@ const Alluser = () => {
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/users")
+        axios.get((import.meta.env.VITE_API_URL || 'http://localhost:5000') + "/users")
             .then((res) => setUsers(res.data))
             .catch((err) => console.error(err));
     }, []);
@@ -87,7 +87,7 @@ const Alluser = () => {
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this user permanently?")) {
             try {
-                await axios.delete(`http://localhost:5000/users/${id}`);
+                await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/users/${id}`);
                 setUsers(users.filter((user) => user._id !== id));
                 alert("User deleted successfully!");
             } catch (err) {

@@ -5,6 +5,10 @@ import slider3Image from '../../assets/imgslide/istockphoto-1353332258-612x612.j
 import RunningCampaigns from './RunningCampaigns';
 import Welcomemsg from './Welcomemsg';
 import Feature from './Feature';
+import Testimonials from './Testimonials';
+import FAQ from './FAQ';
+import HowItWorks from './HowItWorks';
+import Newsletter from './Newsletter';
 
 
 const Home = () => {
@@ -66,8 +70,11 @@ const Home = () => {
                 </div>
 
                 <RunningCampaigns></RunningCampaigns>
-
                 <Feature></Feature>
+                <HowItWorks></HowItWorks>
+                <Testimonials></Testimonials>
+                <FAQ></FAQ>
+                <Newsletter></Newsletter>
 
             </div>
         </div>

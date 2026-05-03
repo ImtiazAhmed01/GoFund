@@ -27,7 +27,7 @@
 //                     registrationDate: new Date().toISOString(),
 //                 };
 
-//                 const serverResponse = await fetch("http://localhost:5000/users", {
+//                 const serverResponse = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + "/users", {
 //                     method: "POST",
 //                     headers: { "Content-Type": "application/json" },
 //                     body: JSON.stringify(newUser),
@@ -109,7 +109,7 @@
 //                 registrationDate: new Date().toISOString(),
 //             };
 
-//             const serverResponse = await fetch("http://localhost:5000/users", {
+//             const serverResponse = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + "/users", {
 //                 method: "POST",
 //                 headers: { "Content-Type": "application/json" },
 //                 body: JSON.stringify(newUser),
@@ -206,7 +206,7 @@ const Register = () => {
                 };
 
                 // Save in backend (don’t block redirect if it fails)
-                fetch("http://localhost:5000/users", {
+                fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + "/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(newUser),
@@ -260,19 +260,6 @@ const Register = () => {
                 displayName: `${fname} ${lname}`,
                 photoURL: imageURL,
             });
-
-            fetch("http://localhost:5000/users", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    firstName: fname,
-                    lastName: lname,
-                    email,
-                    displayName: `${fname} ${lname}`,
-                    photoURL: imageURL,
-                    registrationDate: new Date().toISOString(),
-                }),
-            }).catch(err => console.error("Backend save failed:", err));
 
             toast.success("Registration successful!");
             navigate("/");

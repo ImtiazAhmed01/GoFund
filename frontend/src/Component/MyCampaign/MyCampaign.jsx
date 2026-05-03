@@ -10,7 +10,7 @@ const MyCampaign = () => {
 
     useEffect(() => {
         if (userEmail) {
-            fetch(`http://localhost:5000/myCampaign?userEmail=${userEmail}`)
+            fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/myCampaign?userEmail=${userEmail}`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Failed to fetch campaigns');
@@ -28,7 +28,7 @@ const MyCampaign = () => {
 
     const handleDelete = (campaignId) => {
         if (window.confirm('Are you sure you want to delete this campaign?')) {
-            fetch(`http://localhost:5000/campaigns/${campaignId}`, {
+            fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000' }/campaigns/${campaignId}`, {
                 method: 'DELETE',
             })
                 .then((response) => {
