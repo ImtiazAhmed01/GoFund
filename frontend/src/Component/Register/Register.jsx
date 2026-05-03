@@ -256,13 +256,11 @@ const Register = () => {
         if (!validatePassword(password)) return;
 
         try {
-            // 🔥 Use createUser from AuthContext instead of raw Firebase
             const newUser = await createUser(email, password, {
                 displayName: `${fname} ${lname}`,
                 photoURL: imageURL,
             });
 
-            // Save in backend (fire-and-forget)
             fetch("http://localhost:5000/users", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -277,7 +275,7 @@ const Register = () => {
             }).catch(err => console.error("Backend save failed:", err));
 
             toast.success("Registration successful!");
-            navigate("/"); // 🔥 redirect immediately
+            navigate("/");
         } catch (error) {
             console.error("Registration error:", error.message);
             toast.error("Registration failed. Please try again.");
@@ -285,7 +283,7 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen flex justify-center items-center bg-gray-50 dark:bg-gray-900 dark:text-white py-12 px-4">
+        <div className="min-h-screen mt-5 flex justify-center items-center bg-gray-50 dark:bg-gray-900 dark:text-white py-12 px-4">
             <ToastContainer transition={Bounce} />
             <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold text-center text-gray-800">Create an account</h2>
