@@ -9,25 +9,22 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const { connectMongoDB, getDb } = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
+
+app.use('/auth', authRoutes);
+
 // MongoDB connection setup
-const uri = `mongodb+srv://${(process.env.DB_user)}:${(process.env.DB_pass)}@cluster0.khtuk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+// removed duplicate ObjectId import
 
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
-
-async function connectMongoDB() {
+async function startServer() {
     try {
-        await client.connect();
-        console.log("Connected to MongoDB");
-        const campaignsCollection = client.db('crowdfunding').collection('campaign');
-        const userCollection = client.db('crowdfunding').collection('users');
-        const adminReviewCollection = client.db('crowdfunding').collection("adminReview");
-        const donatedCollection = client.db('crowdfunding').collection('donated');
+        await connectMongoDB();
+        const db = getDb();
+        const campaignsCollection = db.collection('campaign');
+        const userCollection = db.collection('users');
+        const adminReviewCollection = db.collection("adminReview");
+        const donatedCollection = db.collection('donated');
         app.post('/users', async (req, res) => {
             try {
                 const { firstName, lastName, email, photoURL } = req.body;
@@ -114,8 +111,35 @@ async function connectMongoDB() {
 
         app.get('/campaigns', async (req, res) => {
             try {
-                const campaigns = await campaignsCollection.find({}).toArray();
-                res.json(campaigns);
+                const { search, type, minDonation, sort, page = 1, limit = 10 } = req.query;
+                const query = {};
+
+                if (search) {
+                    query.campaignTitle = { $regex: search, $options: 'i' };
+                }
+                if (type) {
+                    query.campaignType = type;
+                }
+                if (minDonation) {
+                    query.minimumDonationAmount = { $gte: Number(minDonation) };
+                }
+
+                let sortQuery = {};
+                if (sort === 'asc') sortQuery.minimumDonationAmount = 1;
+                else if (sort === 'desc') sortQuery.minimumDonationAmount = -1;
+                else sortQuery.createdAt = -1; // Default recent
+
+                const skip = (Number(page) - 1) * Number(limit);
+
+                const campaigns = await campaignsCollection.find(query)
+                    .sort(sortQuery)
+                    .skip(skip)
+                    .limit(Number(limit))
+                    .toArray();
+
+                const total = await campaignsCollection.countDocuments(query);
+
+                res.json({ campaigns, total, page: Number(page), pages: Math.ceil(total / Number(limit)) });
             } catch (error) {
                 console.error('Error fetching campaigns:', error);
                 res.status(500).send({ message: 'Error fetching campaigns' });
@@ -466,10 +490,55 @@ async function connectMongoDB() {
             }
         });
 
+        // Contact message route
+        app.post('/contact', async (req, res) => {
+            try {
+                const { name, email, message } = req.body;
+                if (!name || !email || !message) {
+                    return res.status(400).json({ message: "All fields are required" });
+                }
+                const result = await db.collection('contacts').insertOne({
+                    name, email, message, date: new Date()
+                });
+                res.status(201).json({ message: "Message sent", id: result.insertedId });
+            } catch (error) {
+                res.status(500).json({ message: "Error saving contact message" });
+            }
+        });
+
+        // Dashboard Stats route
+        app.get('/dashboard-stats', async (req, res) => {
+            try {
+                const totalCampaigns = await campaignsCollection.countDocuments();
+                const totalUsers = await userCollection.countDocuments();
+                const totalDonations = await donatedCollection.countDocuments();
+                const recentDonations = await donatedCollection.find().sort({ donatedAt: -1 }).limit(5).toArray();
+
+                // Aggregation for charts
+                const typeData = await campaignsCollection.aggregate([
+                    { $group: { _id: "$campaignType", value: { $sum: 1 } } },
+                    { $project: { name: "$_id", value: 1, _id: 0 } }
+                ]).toArray();
+
+                res.json({
+                    cards: { totalCampaigns, totalUsers, totalDonations },
+                    charts: { typeData },
+                    recentDonations
+                });
+            } catch (error) {
+                res.status(500).json({ message: "Error fetching stats" });
+            }
+        });
 
         // Test route to check server status
         app.get('/', (req, res) => {
             res.send('Server is running');
+        });
+
+        // Centralized error handling
+        app.use((err, req, res, next) => {
+            console.error(err.stack);
+            res.status(500).json({ message: 'Internal Server Error', error: err.message });
         });
 
         // Start the server
@@ -477,9 +546,9 @@ async function connectMongoDB() {
             console.log(`Server is running on port ${port}`);
         });
     } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
+        console.error('Error starting server:', error);
         process.exit(1);  // Exit process if the connection fails
     }
 }
 
-connectMongoDB();
+startServer();
